@@ -8,10 +8,7 @@
         tools:context=".MainActivity">
 
     <TextView
-<<<<<<< HEAD
             android:id="@+id/timezoneView"
-=======
->>>>>>> 0ba0a9704825388f9ba0855b5ac184f83fe10ad6
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello World!"
@@ -19,13 +16,4 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
-<<<<<<< HEAD
-    <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="472dp"
-            tools:layout_editor_absoluteX="176dp" android:id="@+id/textView"/>
-=======
->>>>>>> 0ba0a9704825388f9ba0855b5ac184f83fe10ad6
-
 </androidx.constraintlayout.widget.ConstraintLayout>
