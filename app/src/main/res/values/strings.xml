@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Greenwich</string>
+<<<<<<< HEAD
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="utc">UTC%1$d</string>
+=======
+>>>>>>> 0ba0a9704825388f9ba0855b5ac184f83fe10ad6
 </resources>
