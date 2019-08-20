@@ -1,11 +1,13 @@
 package musubidevs.android.greenwich.model
 
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
+import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 /**
@@ -22,7 +24,15 @@ data class Timestamp(
         get() = dateTime.toLocalDate()
 
     val dateString: String
-        get() = date.toString()
+        get() {
+            val isoFormat = date.toString()
+
+            @SuppressLint("SimpleDateFormat")
+            val dateIsoParser = SimpleDateFormat("yyyy-MM-dd")
+            val dateObj = dateIsoParser.parse(isoFormat)
+            dateIsoParser.applyPattern("EEE MMM dd, yyyy")
+            return dateIsoParser.format(dateObj)
+        }
 
     val year: Int
         get() = date.year
@@ -37,7 +47,15 @@ data class Timestamp(
         get() = dateTime.toLocalTime()
 
     val timeString: String
-        get() = time.toString()
+        get() {
+            val isoFormat = time.toString()
+
+            @SuppressLint("SimpleDateFormat")
+            val timeIsoFormat = SimpleDateFormat("HH:mm:ss.SSS")
+            val timeObj = timeIsoFormat.parse(isoFormat)
+            timeIsoFormat.applyPattern("HH:mm:ss")
+            return timeIsoFormat.format(timeObj)
+        }
 
     val hour: Int
         get() = time.hourOfDay
@@ -53,10 +71,11 @@ data class Timestamp(
             return TimeUnit.MILLISECONDS.toHours(offsetInMillis)
         }
 
-    fun updateDate(year: Int, month: Int, day: Int) {}
-
-    fun updateTime(hour: Int, minute: Int) {
-
+    fun withDate(year: Int, month: Int, day: Int): Timestamp {
+        return Timestamp(dateTime.withDate(year, month, day))
     }
 
+    fun withTime(hour: Int, minute: Int): Timestamp {
+        return Timestamp(dateTime.withTime(hour, minute, 0, 0))
+    }
 }

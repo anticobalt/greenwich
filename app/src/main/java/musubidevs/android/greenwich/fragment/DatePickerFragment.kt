@@ -30,13 +30,11 @@ class DatePickerFragment(private val currentTimestamp: Timestamp) : DialogFragme
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return DatePickerDialog(context!!, this, currentTimestamp.year, currentTimestamp.month, currentTimestamp.day)
+        return DatePickerDialog(context!!, this, currentTimestamp.year, currentTimestamp.month - 1, currentTimestamp.day)
     }
 
     override fun onDateSet(picker: DatePicker?, year: Int, month: Int, day: Int) {
-        val copy = currentTimestamp.copy()
-        copy.updateDate(year, month, day)
-        onDateSetListener?.onDateSet(copy)
+        onDateSetListener?.onDateSet(currentTimestamp.withDate(year, month + 1, day))
     }
 
 }

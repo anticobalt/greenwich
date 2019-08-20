@@ -34,9 +34,7 @@ class TimePickerFragment(private val currentTimestamp: Timestamp) : DialogFragme
     }
 
     override fun onTimeSet(picker: TimePicker?, hour: Int, minute: Int) {
-        val copy = currentTimestamp.copy()
-        copy.updateTime(hour, minute)
-        onTimeSetListener?.onTimeSet(copy)
+        onTimeSetListener?.onTimeSet(currentTimestamp.withTime(hour, minute))
     }
 
 }

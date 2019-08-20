@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetInterface,
         setContentView(R.layout.activity_main)
 
         sourceTimestamp = Timestamp()
-        buildSourceView()
+        fillSourceView()
         setSourceOnClicks()
 
         timestampRecycler.layoutManager = LinearLayoutManager(this)
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetInterface,
         createConversionTimestampButton.setOnClickListener { adapter.addTimestamp(Timestamp()) }
     }
 
-    private fun buildSourceView() {
+    private fun fillSourceView() {
         sourceView.dateView.text = sourceTimestamp.dateString
         sourceView.timeView.text = sourceTimestamp.timeString
         sourceView.timezoneView.text = getString(R.string.utc, sourceTimestamp.utcOffset)
@@ -52,12 +52,12 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetInterface,
 
     override fun onTimeSet(timestamp: Timestamp) {
         sourceTimestamp = timestamp
-        buildSourceView()
+        fillSourceView()
     }
 
     override fun onDateSet(timestamp: Timestamp) {
         sourceTimestamp = timestamp
-        buildSourceView()
+        fillSourceView()
     }
 
 }
