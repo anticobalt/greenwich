@@ -10,9 +10,8 @@ import musubidevs.android.greenwich.model.Timestamp
 /**
  * @author jmmxp
  */
-class TimestampAdapter : RecyclerView.Adapter<TimestampAdapter.TimestampViewHolder>() {
-
-    private val timestamps = mutableListOf<Timestamp>()
+class TimestampAdapter(private val timestamps: MutableList<Timestamp>) :
+    RecyclerView.Adapter<TimestampAdapter.TimestampViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimestampViewHolder {
         return TimestampViewHolder(
@@ -32,9 +31,8 @@ class TimestampAdapter : RecyclerView.Adapter<TimestampAdapter.TimestampViewHold
         return timestamps.size
     }
 
-    fun addTimestamp(timestamp: Timestamp) {
-        timestamps.add(timestamp)
-        notifyDataSetChanged()
+    fun onSourceTimestampUpdate(sourceTimestamp: Timestamp) {
+
     }
 
     class TimestampViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

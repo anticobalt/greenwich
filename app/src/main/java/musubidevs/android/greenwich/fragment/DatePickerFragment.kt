@@ -6,25 +6,25 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
-import musubidevs.android.greenwich.model.Timestamp
+import musubidevs.android.greenwich.model.SourceTimestamp
 
 /**
  * @author anticobalt
  * @author jmmxp
  */
-class DatePickerFragment(private val currentTimestamp: Timestamp) : DialogFragment(),
+class DatePickerFragment(private val currentTimestamp: SourceTimestamp) : DialogFragment(),
     DatePickerDialog.OnDateSetListener {
 
     private var onDateSetListener: OnDateSetInterface? = null
 
     interface OnDateSetInterface {
-        fun onDateSet(timestamp: Timestamp)
+        fun onDateSet(timestamp: SourceTimestamp)
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if (context !is OnDateSetInterface) {
-            throw ClassCastException("The hosting activity does not implement OnTimeSetInterface")
+            throw ClassCastException("The hosting activity does not implement OnDateSetInterface")
         }
         onDateSetListener = context
     }

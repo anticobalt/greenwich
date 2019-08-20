@@ -4,31 +4,42 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.list_item_conversion.view.*
+import kotlinx.android.synthetic.main.list_item_target_timestamp.view.*
 import musubidevs.android.greenwich.fragment.DatePickerFragment
 import musubidevs.android.greenwich.fragment.TimePickerFragment
-import musubidevs.android.greenwich.model.Timestamp
+import musubidevs.android.greenwich.layout.SingleColumnCardMargin
+import musubidevs.android.greenwich.model.SourceTimestamp
+import musubidevs.android.greenwich.model.TargetTimestamp
 
 /**
  * @author anticobalt
  * @author jmmxp
  */
 class MainActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetInterface, DatePickerFragment.OnDateSetInterface {
-
-    private val adapter: TimestampAdapter = TimestampAdapter()
-    private lateinit var sourceTimestamp: Timestamp
+    private lateinit var sourceTimestamp: SourceTimestamp
+    private val targetTimestamps = mutableListOf<TargetTimestamp>()
+    private lateinit var targetTimestampAdapter: TargetTimestampAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        sourceTimestamp = Timestamp()
+        sourceTimestamp = SourceTimestamp()
         fillSourceView()
         setSourceOnClicks()
 
+        targetTimestampAdapter = TargetTimestampAdapter(targetTimestamps, supportFragmentManager)
         timestampRecycler.layoutManager = LinearLayoutManager(this)
-        timestampRecycler.adapter = adapter
-        createConversionTimestampButton.setOnClickListener { adapter.addTimestamp(Timestamp()) }
+        timestampRecycler.adapter = targetTimestampAdapter
+        timestampRecycler.addItemDecoration(SingleColumnCardMargin(resources.getDimensionPixelSize(R.dimen.card_margin)))
+
+        createTargetTimestampButton.setOnClickListener { addTargetTimestamp() }
+    }
+
+    private fun addTargetTimestamp() {
+        // TODO(jmmxp): Change this target timestamp from the default one
+        targetTimestamps.add(TargetTimestamp())
+        targetTimestampAdapter.notifyDataSetChanged()
     }
 
     private fun fillSourceView() {
@@ -50,14 +61,15 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetInterface,
         TimePickerFragment(sourceTimestamp).show(supportFragmentManager, "timePicker")
     }
 
-    override fun onTimeSet(timestamp: Timestamp) {
+    override fun onTimeSet(timestamp: SourceTimestamp) {
         sourceTimestamp = timestamp
         fillSourceView()
+        targetTimestampAdapter.onSourceTimestampUpdate(timestamp)
     }
 
-    override fun onDateSet(timestamp: Timestamp) {
+    override fun onDateSet(timestamp: SourceTimestamp) {
         sourceTimestamp = timestamp
         fillSourceView()
+        targetTimestampAdapter.onSourceTimestampUpdate(timestamp)
     }
-
 }

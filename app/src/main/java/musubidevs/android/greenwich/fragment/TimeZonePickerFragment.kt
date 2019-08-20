@@ -6,27 +6,27 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
-import musubidevs.android.greenwich.model.SourceTimestamp
+import musubidevs.android.greenwich.model.Timestamp
 
 /**
  * @author anticobalt
  * @author jmmxp
  */
-class TimePickerFragment(private val currentTimestamp: SourceTimestamp) : DialogFragment(),
+class TimeZonePickerFragment(private val currentTimestamp: Timestamp) : DialogFragment(),
     TimePickerDialog.OnTimeSetListener {
 
-    private var onTimeSetListener: OnTimeSetInterface? = null
+    private var onTimeZoneSetListener: OnTimeZoneSetInterface? = null
 
-    interface OnTimeSetInterface {
-        fun onTimeSet(timestamp: SourceTimestamp)
+    interface OnTimeZoneSetInterface {
+        fun onTimeSet(timestamp: Timestamp)
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context !is OnTimeSetInterface) {
-            throw ClassCastException("The hosting activity does not implement OnTimeSetInterface")
+        if (context !is OnTimeZoneSetInterface) {
+            throw ClassCastException("The hosting activity does not implement OnTimeZoneSetInterface")
         }
-        onTimeSetListener = context
+        onTimeZoneSetListener = context
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -34,7 +34,7 @@ class TimePickerFragment(private val currentTimestamp: SourceTimestamp) : Dialog
     }
 
     override fun onTimeSet(picker: TimePicker?, hour: Int, minute: Int) {
-        onTimeSetListener?.onTimeSet(currentTimestamp.withTime(hour, minute))
+//        onTimeZoneSetListener?.onTimeSet(currentTimestamp.withTimeZone(hour, minute))
     }
 
 }

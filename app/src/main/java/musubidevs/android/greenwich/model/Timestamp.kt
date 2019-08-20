@@ -1,8 +1,6 @@
 package musubidevs.android.greenwich.model
 
 import android.annotation.SuppressLint
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.LocalDate
@@ -14,11 +12,10 @@ import java.util.concurrent.TimeUnit
  * @author anticobalt
  * @author jmmxp
  */
-@Parcelize
-data class Timestamp(
-    private val dateTime: DateTime = DateTime.now(),
-    private val dateTimeZone: DateTimeZone = DateTimeZone.getDefault()
-) : Parcelable {
+abstract class Timestamp(
+    protected val dateTime: DateTime,
+    protected val dateTimeZone: DateTimeZone
+) {
 
     val date: LocalDate
         get() = dateTime.toLocalDate()
@@ -71,11 +68,8 @@ data class Timestamp(
             return TimeUnit.MILLISECONDS.toHours(offsetInMillis)
         }
 
-    fun withDate(year: Int, month: Int, day: Int): Timestamp {
-        return Timestamp(dateTime.withDate(year, month, day))
-    }
-
-    fun withTime(hour: Int, minute: Int): Timestamp {
-        return Timestamp(dateTime.withTime(hour, minute, 0, 0))
+    fun withTimeZone(dateTimeZone: DateTimeZone): Timestamp? {
+        // TODO(jmmxp): Make return type non-nullable, finish function
+        return null
     }
 }
