@@ -68,8 +68,11 @@ abstract class Timestamp(
             return TimeUnit.MILLISECONDS.toHours(offsetInMillis)
         }
 
-    fun withTimeZone(dateTimeZone: DateTimeZone): Timestamp? {
-        // TODO(jmmxp): Make return type non-nullable, finish function
-        return null
+    fun withTimeZone(dateTimeZone: DateTimeZone): Timestamp {
+        return when(this) {
+            is SourceTimestamp -> SourceTimestamp(dateTime, dateTimeZone)
+            is TargetTimestamp -> TargetTimestamp(dateTime, dateTimeZone)
+            else -> throw ClassNotFoundException("${this.javaClass.name} is not a valid Timestamp type")
+        }
     }
 }

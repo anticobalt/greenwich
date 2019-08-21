@@ -6,13 +6,18 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.list_item_target_timestamp.view.*
+import kotlinx.android.synthetic.main.list_item_conversion.view.*
+import musubidevs.android.greenwich.fragment.DatePickerFragment
+import musubidevs.android.greenwich.fragment.TimePickerFragment
 import musubidevs.android.greenwich.fragment.TimeZonePickerFragment
 import musubidevs.android.greenwich.model.Conversion
 import musubidevs.android.greenwich.model.SourceTimestamp
+import musubidevs.android.greenwich.model.TargetTimestamp
+import musubidevs.android.greenwich.model.Timestamp
 
 /**
  * @author jmmxp
+ * @author anticobalt
  */
 class ConversionAdapter(
     private val conversions: MutableList<Conversion>,
@@ -23,11 +28,12 @@ class ConversionAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConversionViewHolder {
         return ConversionViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.list_item_target_timestamp,
+                R.layout.list_item_conversion,
                 parent,
                 false
             ),
-            fragmentManager
+            fragmentManager,
+            this
         )
     }
 
@@ -39,32 +45,76 @@ class ConversionAdapter(
         return conversions.size
     }
 
-    fun onSourceTimestampUpdate(sourceTimestamp: SourceTimestamp) {
-        for (conversion in conversions) {
-            targetTimestamp.withSource(sourceTimestamp)
-        }
-    }
-
-    class ConversionViewHolder(itemView: View, fragmentManager: FragmentManager) :
+    class ConversionViewHolder(
+        itemView: View,
+        private val fragmentManager: FragmentManager,
+        private val adapter: ConversionAdapter
+    ) :
         RecyclerView.ViewHolder(itemView) {
 
-        private lateinit var targetTimestamp: Conversion
-        private var dateView: TextView = itemView.sourceDateView
-        private var timeView: TextView = itemView.sourceTimeView
-        private var timezoneView: TextView = itemView.sourceTimeZoneView
+        private lateinit var conversion: Conversion
+        private lateinit var sourceTimestamp: SourceTimestamp
+        private lateinit var targetTimestamp: TargetTimestamp
+        private var sourceDateView: TextView = itemView.sourceDateView as TextView
+        private var sourceTimeView: TextView = itemView.sourceTimeView as TextView
+        private var sourceTimeZoneView: TextView = itemView.sourceTimeZoneView as TextView
+        private var targetDateView: TextView = itemView.targetDateView as TextView
+        private var targetTimeView: TextView = itemView.targetTimeView as TextView
+        private var targetTimeZoneView: TextView = itemView.targetTimeZoneView as TextView
 
         init {
-            timezoneView.setOnClickListener {
-                TimeZonePickerFragment(targetTimestamp).show(fragmentManager, "timeZonePicker")
-            }
+            setSourceOnClicks()
         }
 
         fun bind(conversion: Conversion) {
-            targetTimestamp = conversion
-            dateView.text = timestamp.dateString
-            timeView.text = timestamp.timeString
-            timezoneView.text = itemView.context.getString(R.string.utc, timestamp.utcOffset)
+            this.conversion = conversion
+            this.sourceTimestamp = conversion.sourceTimestamp
+            this.targetTimestamp = conversion.targetTimestamp
+
+            sourceDateView.text = sourceTimestamp.dateString
+            sourceTimeView.text = sourceTimestamp.timeString
+            sourceTimeZoneView.text =
+                itemView.context.getString(R.string.utc, sourceTimestamp.utcOffset)
+
+            targetDateView.text = targetTimestamp.dateString
+            targetTimeView.text = targetTimestamp.timeString
+            targetTimeZoneView.text =
+                itemView.context.getString(R.string.utc, targetTimestamp.utcOffset)
         }
+
+        private fun setSourceOnClicks() {
+            sourceDateView.setOnClickListener {
+                DatePickerFragment(sourceTimestamp) { update(it) }.show(
+                    fragmentManager,
+                    "datePicker"
+                )
+            }
+            sourceTimeView.setOnClickListener {
+                TimePickerFragment(sourceTimestamp) { update(it) }.show(
+                    fragmentManager,
+                    "timePicker"
+                )
+            }
+            sourceTimeZoneView.setOnClickListener {
+                TimeZonePickerFragment(sourceTimestamp) { update(it) }.show(
+                    fragmentManager,
+                    "timeZonePicker"
+                )
+            }
+
+            targetTimeZoneView.setOnClickListener {
+                TimeZonePickerFragment(targetTimestamp) { update(it) }.show(
+                    fragmentManager,
+                    "timeZonePicker"
+                )
+            }
+        }
+
+        private fun update(newTimestamp: Timestamp) {
+            conversion.updateTimestamp(newTimestamp)
+            adapter.notifyItemChanged(adapterPosition)
+        }
+
     }
 }
 

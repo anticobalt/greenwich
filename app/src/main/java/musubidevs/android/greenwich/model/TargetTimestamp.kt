@@ -12,6 +12,7 @@ class TargetTimestamp(
 ) : Timestamp(dateTime, dateTimeZone) {
     fun withSource(sourceTimestamp: SourceTimestamp): TargetTimestamp {
         val offset = utcOffset - sourceTimestamp.utcOffset
-        return TargetTimestamp(dateTime.minus(offset), dateTimeZone)
+        // FIXME: date is wrong
+        return TargetTimestamp(newDateTime, dateTimeZone)
     }
 }
