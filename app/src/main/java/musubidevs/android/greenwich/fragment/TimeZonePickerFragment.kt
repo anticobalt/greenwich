@@ -1,11 +1,13 @@
 package musubidevs.android.greenwich.fragment
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
+import musubidevs.android.greenwich.R
 import musubidevs.android.greenwich.model.Timestamp
 
 /**
@@ -18,7 +20,7 @@ class TimeZonePickerFragment(private val currentTimestamp: Timestamp) : DialogFr
     private var onTimeZoneSetListener: OnTimeZoneSetInterface? = null
 
     interface OnTimeZoneSetInterface {
-        fun onTimeSet(timestamp: Timestamp)
+        fun onTimeZoneSet(timestamp: Timestamp)
     }
 
     override fun onAttach(context: Context?) {
@@ -30,7 +32,8 @@ class TimeZonePickerFragment(private val currentTimestamp: Timestamp) : DialogFr
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return TimePickerDialog(context, this, currentTimestamp.hour, currentTimestamp.minute, true)
+        val dialogBuilder = AlertDialog.Builder(context)
+        return dialogBuilder.setView(R.layout.dialog_time_zone_picker).create()
     }
 
     override fun onTimeSet(picker: TimePicker?, hour: Int, minute: Int) {

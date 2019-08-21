@@ -7,7 +7,7 @@
     app:cardElevation="3dp">
 
     <LinearLayout
-        android:id="@+id/timestampView"
+        android:id="@+id/TargetTimestampView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -15,31 +15,31 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/dateView"
+            android:id="@+id/sourceDateView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/timestampView" />
+            app:layout_constraintTop_toTopOf="@id/TargetTimestampView" />
 
         <TextView
-            android:id="@+id/timeView"
+            android:id="@+id/sourceTimeView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dateView" />
+            app:layout_constraintTop_toBottomOf="@id/sourceDateView" />
 
         <TextView
-            android:id="@+id/timezoneView"
+            android:id="@+id/sourceTimeZoneView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/timeView" />
+            app:layout_constraintTop_toBottomOf="@id/sourceTimeView" />
 
     </LinearLayout>
 

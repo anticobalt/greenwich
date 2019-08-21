@@ -8,20 +8,20 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item_target_timestamp.view.*
 import musubidevs.android.greenwich.fragment.TimeZonePickerFragment
+import musubidevs.android.greenwich.model.Conversion
 import musubidevs.android.greenwich.model.SourceTimestamp
-import musubidevs.android.greenwich.model.TargetTimestamp
 
 /**
  * @author jmmxp
  */
-class TargetTimestampAdapter(
-    private val targetTimestamps: MutableList<TargetTimestamp>,
+class ConversionAdapter(
+    private val conversions: MutableList<Conversion>,
     private val fragmentManager: FragmentManager
 ) :
-    RecyclerView.Adapter<TargetTimestampAdapter.TargetTimestampViewHolder>() {
+    RecyclerView.Adapter<ConversionAdapter.ConversionViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TargetTimestampViewHolder {
-        return TargetTimestampViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConversionViewHolder {
+        return ConversionViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.list_item_target_timestamp,
                 parent,
@@ -31,27 +31,27 @@ class TargetTimestampAdapter(
         )
     }
 
-    override fun onBindViewHolder(holder: TargetTimestampViewHolder, position: Int) {
-        holder.bind(targetTimestamps[position])
+    override fun onBindViewHolder(holder: ConversionViewHolder, position: Int) {
+        holder.bind(conversions[position])
     }
 
     override fun getItemCount(): Int {
-        return targetTimestamps.size
+        return conversions.size
     }
 
     fun onSourceTimestampUpdate(sourceTimestamp: SourceTimestamp) {
-        for (targetTimestamp in targetTimestamps) {
+        for (conversion in conversions) {
             targetTimestamp.withSource(sourceTimestamp)
         }
     }
 
-    class TargetTimestampViewHolder(itemView: View, fragmentManager: FragmentManager) :
+    class ConversionViewHolder(itemView: View, fragmentManager: FragmentManager) :
         RecyclerView.ViewHolder(itemView) {
 
-        private lateinit var targetTimestamp: TargetTimestamp
-        private var dateView: TextView = itemView.dateView
-        private var timeView: TextView = itemView.timeView
-        private var timezoneView: TextView = itemView.timezoneView
+        private lateinit var targetTimestamp: Conversion
+        private var dateView: TextView = itemView.sourceDateView
+        private var timeView: TextView = itemView.sourceTimeView
+        private var timezoneView: TextView = itemView.sourceTimeZoneView
 
         init {
             timezoneView.setOnClickListener {
@@ -59,8 +59,8 @@ class TargetTimestampAdapter(
             }
         }
 
-        fun bind(timestamp: TargetTimestamp) {
-            targetTimestamp = timestamp
+        fun bind(conversion: Conversion) {
+            targetTimestamp = conversion
             dateView.text = timestamp.dateString
             timeView.text = timestamp.timeString
             timezoneView.text = itemView.context.getString(R.string.utc, timestamp.utcOffset)

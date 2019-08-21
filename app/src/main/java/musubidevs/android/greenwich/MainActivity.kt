@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.list_item_target_timestamp.view.*
 import musubidevs.android.greenwich.fragment.DatePickerFragment
 import musubidevs.android.greenwich.fragment.TimePickerFragment
 import musubidevs.android.greenwich.layout.SingleColumnCardMargin
+import musubidevs.android.greenwich.model.Conversion
 import musubidevs.android.greenwich.model.SourceTimestamp
 import musubidevs.android.greenwich.model.TargetTimestamp
 
@@ -16,21 +17,20 @@ import musubidevs.android.greenwich.model.TargetTimestamp
  * @author jmmxp
  */
 class MainActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetInterface, DatePickerFragment.OnDateSetInterface {
-    private lateinit var sourceTimestamp: SourceTimestamp
-    private val targetTimestamps = mutableListOf<TargetTimestamp>()
-    private lateinit var targetTimestampAdapter: TargetTimestampAdapter
+
+    private val conversions = mutableListOf<Conversion>()
+    private lateinit var conversionAdapter: ConversionAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        sourceTimestamp = SourceTimestamp()
         fillSourceView()
         setSourceOnClicks()
 
-        targetTimestampAdapter = TargetTimestampAdapter(targetTimestamps, supportFragmentManager)
+        conversionAdapter = ConversionAdapter(conversions, supportFragmentManager)
         timestampRecycler.layoutManager = LinearLayoutManager(this)
-        timestampRecycler.adapter = targetTimestampAdapter
+        timestampRecycler.adapter = conversionAdapter
         timestampRecycler.addItemDecoration(SingleColumnCardMargin(resources.getDimensionPixelSize(R.dimen.card_margin)))
 
         createTargetTimestampButton.setOnClickListener { addTargetTimestamp() }
@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetInterface,
 
     private fun addTargetTimestamp() {
         // TODO(jmmxp): Change this target timestamp from the default one
-        targetTimestamps.add(TargetTimestamp())
-        targetTimestampAdapter.notifyDataSetChanged()
+        conversions.add(Conversion())
+        conversionAdapter.notifyDataSetChanged()
     }
 
     private fun fillSourceView() {
@@ -64,12 +64,12 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetInterface,
     override fun onTimeSet(timestamp: SourceTimestamp) {
         sourceTimestamp = timestamp
         fillSourceView()
-        targetTimestampAdapter.onSourceTimestampUpdate(timestamp)
+        conversionAdapter.onSourceTimestampUpdate(timestamp)
     }
 
     override fun onDateSet(timestamp: SourceTimestamp) {
         sourceTimestamp = timestamp
         fillSourceView()
-        targetTimestampAdapter.onSourceTimestampUpdate(timestamp)
+        conversionAdapter.onSourceTimestampUpdate(timestamp)
     }
 }
