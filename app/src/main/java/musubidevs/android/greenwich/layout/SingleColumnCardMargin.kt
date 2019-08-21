@@ -14,12 +14,12 @@ class SingleColumnCardMargin(private val space : Int) : RecyclerView.ItemDecorat
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         outRect.left = space
         outRect.right = space
-        outRect.bottom = space
+        outRect.top = space
 
-        if (parent.getChildLayoutPosition(view) == 0) {
-            outRect.top = space
+        if (parent.getChildLayoutPosition(view) == state.itemCount - 1) {
+            outRect.bottom = space
         } else {
-            outRect.top = 0
+            outRect.bottom = 0
         }
     }
 
