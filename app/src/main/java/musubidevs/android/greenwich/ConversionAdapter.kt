@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.component_conversion_source.view.*
 import kotlinx.android.synthetic.main.list_item_conversion.view.*
 import musubidevs.android.greenwich.fragment.DatePickerFragment
 import musubidevs.android.greenwich.fragment.TimePickerFragment
@@ -55,9 +56,9 @@ class ConversionAdapter(
         private lateinit var conversion: Conversion
         private lateinit var sourceTimestamp: SourceTimestamp
         private lateinit var targetTimestamp: TargetTimestamp
-        private var sourceDateView: TextView = itemView.sourceDateView as TextView
-        private var sourceTimeView: TextView = itemView.sourceTimeView as TextView
-        private var sourceTimeZoneView: TextView = itemView.sourceTimeZoneView as TextView
+        private var sourceDateView: TextView = itemView.sourceDateView.textView as TextView
+        private var sourceTimeView: TextView = itemView.sourceTimeView.textView as TextView
+        private var sourceTimeZoneView: TextView = itemView.sourceTimeZoneView.textView as TextView
         private var targetDateView: TextView = itemView.targetDateView as TextView
         private var targetTimeView: TextView = itemView.targetTimeView as TextView
         private var targetTimeZoneView: TextView = itemView.targetTimeZoneView as TextView

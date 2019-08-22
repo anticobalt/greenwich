@@ -9,7 +9,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:id="@+id/sourceTimestampView"
@@ -18,25 +19,25 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingBottom="5dp">
+            android:layout_marginBottom="5dp">
 
             <include
                 android:id="@+id/sourceDateView"
-                layout="@layout/item_source_view"
+                layout="@layout/component_conversion_source"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/sourceTimestampView" />
 
             <include
                 android:id="@+id/sourceTimeView"
-                layout="@layout/item_source_view"
+                layout="@layout/component_conversion_source"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/sourceTimeView" />
 
             <include
                 android:id="@+id/sourceTimeZoneView"
-                layout="@layout/item_source_view"
+                layout="@layout/component_conversion_source"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/sourceTimeView" />
@@ -46,39 +47,47 @@
         <LinearLayout
             android:id="@+id/targetTimestampView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_weight="1">
+            android:layout_marginBottom="5dp">
 
             <TextView
                 android:id="@+id/targetDateView"
+                style="@style/TimestampText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="5dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/targetTimestampView" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/targetTimeView"
+                style="@style/TimestampText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="5dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sourceDateView" />
+                app:layout_constraintTop_toBottomOf="@id/targetDateView" />
 
             <TextView
                 android:id="@+id/targetTimeZoneView"
+                style="@style/TimestampText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="5dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sourceTimeView" />
+                app:layout_constraintTop_toBottomOf="@id/targetTimeView" />
 
         </LinearLayout>
 

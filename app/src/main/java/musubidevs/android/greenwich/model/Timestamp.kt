@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit
  * @author jmmxp
  */
 abstract class Timestamp(
-    protected val dateTime: DateTime,
-    protected val dateTimeZone: DateTimeZone
+    internal val dateTime: DateTime,
+    internal val dateTimeZone: DateTimeZone
 ) {
 
     val date: LocalDate
