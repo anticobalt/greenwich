@@ -17,7 +17,7 @@ class TimePickerFragment(
 ) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return TimePickerDialog(context, this, currentTimestamp.hour, currentTimestamp.minute, true)
+        return TimePickerDialog(context, this, currentTimestamp.hour, currentTimestamp.minute, false)
     }
 
     override fun onTimeSet(picker: TimePicker?, hour: Int, minute: Int) {
