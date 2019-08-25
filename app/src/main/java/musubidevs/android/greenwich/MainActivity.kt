@@ -4,7 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
+import com.fatboyindustrial.gsonjodatime.Converters
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.jaredrummler.cyanea.app.CyaneaAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,16 +20,13 @@ class MainActivity : CyaneaAppCompatActivity() {
 
     private lateinit var conversions: MutableList<Conversion>
     private lateinit var conversionAdapter: ConversionAdapter
-    private val gson = Gson()
+    private val gson = Converters.registerDateTime(GsonBuilder()).create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        conversions = mutableListOf()
-        conversionAdapter = ConversionAdapter(conversions, supportFragmentManager)
         conversionRecycler.layoutManager = LinearLayoutManager(this)
-        conversionRecycler.adapter = conversionAdapter
         conversionRecycler.addItemDecoration(
             SingleColumnCardMargin(
                 resources.getDimensionPixelSize(
@@ -44,7 +42,9 @@ class MainActivity : CyaneaAppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        readConversionsFromPrefs()
+        conversions = readConversionsFromPrefs()
+        conversionAdapter = ConversionAdapter(conversions, supportFragmentManager)
+        conversionRecycler.adapter = conversionAdapter
     }
 
     override fun onPause() {
@@ -65,18 +65,15 @@ class MainActivity : CyaneaAppCompatActivity() {
         }
     }
 
-    private inline fun <reified T> genericType() = object: TypeToken<T>() {}.type!!
-
-    private fun readConversionsFromPrefs() {
+    private fun readConversionsFromPrefs(): MutableList<Conversion> {
         val prefs = getSharedPreferences(CONVERSIONS_PREFS_NAME, Context.MODE_PRIVATE)
-        // TODO(jmmxp): Ensure empty string works for JSON parsing
-        val conversionsJson = prefs.getString(CONVERSIONS_PREFS_NAME, "") ?: return
-        if (conversionsJson.isEmpty()) return
-        conversions = gson.fromJson(conversionsJson, genericType<MutableList<Conversion>>())
+        val conversionsJson = prefs.getString(CONVERSIONS_PREFS_KEY, "") ?: return mutableListOf()
+        if (conversionsJson.isEmpty()) return mutableListOf()
+        return gson.fromJson(conversionsJson, object: TypeToken<MutableList<Conversion>>() {}.type)
     }
 
     companion object {
-        private const val CONVERSIONS_PREFS_NAME = "conversions"
+        private const val CONVERSIONS_PREFS_NAME = "conversion_prefs"
         private const val CONVERSIONS_PREFS_KEY = "conversions"
     }
 }

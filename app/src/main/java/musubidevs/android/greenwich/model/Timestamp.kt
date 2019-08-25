@@ -2,11 +2,9 @@ package musubidevs.android.greenwich.model
 
 import android.annotation.SuppressLint
 import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
 import java.text.SimpleDateFormat
-import java.util.concurrent.TimeUnit
 
 /**
  * @author anticobalt
@@ -14,7 +12,7 @@ import java.util.concurrent.TimeUnit
  */
 abstract class Timestamp(
     internal val dateTime: DateTime,
-    internal val dateTimeZone: DateTimeZone
+    internal val utcOffset: UtcOffset
 ) {
 
     val date: LocalDate
@@ -50,7 +48,7 @@ abstract class Timestamp(
             @SuppressLint("SimpleDateFormat")
             val timeIsoFormat = SimpleDateFormat("HH:mm:ss.SSS")
             val timeObj = timeIsoFormat.parse(isoFormat)
-            timeIsoFormat.applyPattern("HH:mm:ss")
+            timeIsoFormat.applyPattern("h:mm a")
             return timeIsoFormat.format(timeObj)
         }
 
@@ -60,19 +58,11 @@ abstract class Timestamp(
     val minute: Int
         get() = time.minuteOfHour
 
-    // https://stackoverflow.com/a/21420765
-    val utcOffset: Long
-        get() {
-            val instant = DateTime.now().millis
-            val offsetInMillis = dateTimeZone.getOffset(instant).toLong()
-            return TimeUnit.MILLISECONDS.toHours(offsetInMillis)
-        }
+    val utcOffsetMillis: Long
+        get() = utcOffset.toMillis()
+    
+    val utcOffsetString: String
+        get() = utcOffset.toString()
 
-    fun withTimeZone(dateTimeZone: DateTimeZone): Timestamp {
-        return when(this) {
-            is SourceTimestamp -> SourceTimestamp(dateTime, dateTimeZone)
-            is TargetTimestamp -> TargetTimestamp(dateTime, dateTimeZone)
-            else -> throw ClassNotFoundException("${this.javaClass.name} is not a valid Timestamp type")
-        }
-    }
+    abstract fun withOffset(utcOffset: UtcOffset): Timestamp
 }

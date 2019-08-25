@@ -74,12 +74,12 @@ class ConversionAdapter(
             sourceDateView.text = sourceTimestamp.dateString
             sourceTimeView.text = sourceTimestamp.timeString
             sourceTimeZoneView.text =
-                itemView.context.getString(R.string.utc, sourceTimestamp.utcOffset)
+                itemView.context.getString(R.string.utc, sourceTimestamp.utcOffsetString)
 
             targetDateView.text = targetTimestamp.dateString
             targetTimeView.text = targetTimestamp.timeString
             targetTimeZoneView.text =
-                itemView.context.getString(R.string.utc, targetTimestamp.utcOffset)
+                itemView.context.getString(R.string.utc, targetTimestamp.utcOffsetString)
         }
 
         private fun setSourceOnClicks() {

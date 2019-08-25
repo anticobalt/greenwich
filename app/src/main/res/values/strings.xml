@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Greenwich</string>
-    <string name="utc">UTC%1$d</string>
+    <string name="utc">UTC%1$s</string>
 </resources>

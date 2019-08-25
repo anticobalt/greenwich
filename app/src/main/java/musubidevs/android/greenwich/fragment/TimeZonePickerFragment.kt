@@ -9,7 +9,6 @@ import androidx.fragment.app.DialogFragment
 import musubidevs.android.greenwich.R
 import musubidevs.android.greenwich.model.Timestamp
 import musubidevs.android.greenwich.model.UtcOffset
-import org.joda.time.DateTimeZone
 
 /**
  * @author anticobalt
@@ -29,7 +28,7 @@ class TimeZonePickerFragment(
         ) as NumberPicker
         numberPicker.minValue = 0
         numberPicker.maxValue = UTC_OFFSETS.size - 1
-        val utcOffsetStrings = UTC_OFFSETS.map { offset -> offset.utcString }
+        val utcOffsetStrings = UTC_OFFSETS.map { offset -> offset.toLongString() }
         numberPicker.displayedValues = utcOffsetStrings.toTypedArray()
 
         return dialogBuilder
@@ -41,52 +40,49 @@ class TimeZonePickerFragment(
     }
 
     private fun onTimeZoneSet(utcOffsetIndex: Int) {
-        val offset = UTC_OFFSETS[utcOffsetIndex]
-        val dateTimeZone =
-            DateTimeZone.forOffsetHoursMinutes(offset.utcOffsetHours, offset.utcOffsetMinutes)
-        onTimeZoneSetCallback(currentTimestamp.withTimeZone(dateTimeZone))
+        onTimeZoneSetCallback(currentTimestamp.withOffset(UTC_OFFSETS[utcOffsetIndex]))
     }
 
     companion object {
         val UTC_OFFSETS = listOf(
-            UtcOffset("-12:00", -12, 0),
-            UtcOffset("-11:00", -11, 0),
-            UtcOffset("-10:00", -10, 0),
-            UtcOffset("-09:30", -9, 30),
-            UtcOffset("-09:00", -9, 0),
-            UtcOffset("-08:00", -8, 0),
-            UtcOffset("-07:00", -7, 0),
-            UtcOffset("-06:00", -6, 0),
-            UtcOffset("-05:00", -5, 0),
-            UtcOffset("-04:00", -4, 0),
-            UtcOffset("-03:30", -3, 30),
-            UtcOffset("-03:00", -3, 0),
-            UtcOffset("-02:00", -2, 0),
-            UtcOffset("-01:00", -1, 0),
-            UtcOffset("±00:00", 0, 0),
-            UtcOffset("+01:00", 1, 0),
-            UtcOffset("+02:00", 2, 0),
-            UtcOffset("+03:00", 3, 0),
-            UtcOffset("+03:30", 3, 30),
-            UtcOffset("+04:00", 4, 0),
-            UtcOffset("+04:30", 4, 30),
-            UtcOffset("+05:00", 5, 0),
-            UtcOffset("+05:30", 5, 30),
-            UtcOffset("+05:45", 5, 45),
-            UtcOffset("+06:00", 6, 0),
-            UtcOffset("+06:30", 6, 30),
-            UtcOffset("+07:00", 7, 0),
-            UtcOffset("+08:00", 8, 0),
-            UtcOffset("+08:45", 8, 45),
-            UtcOffset("+09:00", 9, 0),
-            UtcOffset("+09:30", 9, 30),
-            UtcOffset("+10:00", 10, 0),
-            UtcOffset("+10:30", 10, 30),
-            UtcOffset("+11:00", 11, 0),
-            UtcOffset("+12:00", 12, 0),
-            UtcOffset("+12:45", 12, 45),
-            UtcOffset("+13:00", 13, 0),
-            UtcOffset("+14:00", 14, 0)
+            UtcOffset(-12, 0),
+            UtcOffset(-11, 0),
+            UtcOffset( -10, 0),
+            UtcOffset(-9, 30),
+            UtcOffset(-9, 0),
+            UtcOffset(-8, 0),
+            UtcOffset(-7, 0),
+            UtcOffset(-6, 0),
+            UtcOffset(-5, 0),
+            UtcOffset(-4, 0),
+            UtcOffset(-3, 30),
+            UtcOffset(-3, 0),
+            UtcOffset(-2, 0),
+            UtcOffset(-1, 0),
+            UtcOffset(0, 0),
+            UtcOffset(1, 0),
+            UtcOffset(2, 0),
+            UtcOffset(3, 0),
+            UtcOffset(3, 30),
+            UtcOffset(4, 0),
+            UtcOffset(4, 30),
+            UtcOffset(5, 0),
+            UtcOffset(5, 30),
+            UtcOffset(5, 45),
+            UtcOffset(6, 0),
+            UtcOffset(6, 30),
+            UtcOffset(7, 0),
+            UtcOffset(8, 0),
+            UtcOffset(8, 45),
+            UtcOffset(9, 0),
+            UtcOffset(9, 30),
+            UtcOffset(10, 0),
+            UtcOffset(10, 30),
+            UtcOffset(11, 0),
+            UtcOffset(12, 0),
+            UtcOffset(12, 45),
+            UtcOffset(13, 0),
+            UtcOffset(14, 0)
         )
     }
 

@@ -1,9 +1,11 @@
 package musubidevs.android.greenwich.model
 
+import java.io.Serializable
+
 data class Conversion(
     var sourceTimestamp: SourceTimestamp = SourceTimestamp(),
     var targetTimestamp: TargetTimestamp = TargetTimestamp()
-) {
+): Serializable {
     fun updateTimestamp(timestamp: Timestamp) {
         when (timestamp) {
             is SourceTimestamp -> {
