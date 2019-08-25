@@ -2,6 +2,9 @@ package musubidevs.android.greenwich.model
 
 import java.io.Serializable
 
+/**
+ * @author jmmxp
+ */
 data class Conversion(
     var sourceTimestamp: SourceTimestamp = SourceTimestamp(),
     var targetTimestamp: TargetTimestamp = TargetTimestamp()

@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.NumberPicker
 import androidx.fragment.app.DialogFragment
 import musubidevs.android.greenwich.R
+import musubidevs.android.greenwich.model.SourceTimestamp
 import musubidevs.android.greenwich.model.Timestamp
 import musubidevs.android.greenwich.model.UtcOffset
 
@@ -30,13 +31,27 @@ class TimeZonePickerFragment(
         numberPicker.maxValue = UTC_OFFSETS.size - 1
         val utcOffsetStrings = UTC_OFFSETS.map { offset -> offset.toLongString() }
         numberPicker.displayedValues = utcOffsetStrings.toTypedArray()
+        numberPicker.value = getCurrentOffsetIndex()
 
+        val title = if (currentTimestamp is SourceTimestamp) "What time zone are you in?"
+        else "What time zone are you converting to?"
         return dialogBuilder
             .setView(numberPicker)
-            .setTitle("What time zone are you in?")
+            .setTitle(title)
             .setPositiveButton("OK") { _, _ ->
                 onTimeZoneSet(numberPicker.value)
             }.create()
+    }
+
+    private fun getCurrentOffsetIndex(): Int {
+        for (i in UTC_OFFSETS.indices) {
+            val utcOffset = UTC_OFFSETS[i]
+            if (currentTimestamp.utcOffset == utcOffset) {
+                return i
+            }
+        }
+
+        return 0
     }
 
     private fun onTimeZoneSet(utcOffsetIndex: Int) {

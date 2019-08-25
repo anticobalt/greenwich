@@ -5,6 +5,9 @@ import org.joda.time.DateTimeZone
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
+/**
+ * @author jmmxp
+ */
 class UtcOffset(private val hours: Int, private val minutes: Int) {
     companion object {
         fun default(): UtcOffset {
@@ -44,5 +47,10 @@ class UtcOffset(private val hours: Int, private val minutes: Int) {
             res += ":${abs(minutes)}"
         }
         return res
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return if (other !is UtcOffset) false
+        else this.hours == other.hours && this.minutes == other.minutes
     }
 }

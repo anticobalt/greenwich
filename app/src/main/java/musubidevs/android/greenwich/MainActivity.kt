@@ -67,9 +67,13 @@ class MainActivity : CyaneaAppCompatActivity() {
 
     private fun readConversionsFromPrefs(): MutableList<Conversion> {
         val prefs = getSharedPreferences(CONVERSIONS_PREFS_NAME, Context.MODE_PRIVATE)
-        val conversionsJson = prefs.getString(CONVERSIONS_PREFS_KEY, "") ?: return mutableListOf()
+        val conversionsJson =
+            prefs.getString(CONVERSIONS_PREFS_KEY, "") ?: return mutableListOf()
         if (conversionsJson.isEmpty()) return mutableListOf()
-        return gson.fromJson(conversionsJson, object: TypeToken<MutableList<Conversion>>() {}.type)
+        return gson.fromJson(
+            conversionsJson,
+            object : TypeToken<MutableList<Conversion>>() {}.type
+        )
     }
 
     companion object {
