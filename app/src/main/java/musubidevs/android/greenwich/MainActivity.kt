@@ -1,15 +1,12 @@
 package musubidevs.android.greenwich
 
 import android.content.Context
-import android.content.res.ColorStateList
+import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -18,6 +15,8 @@ import com.fatboyindustrial.gsonjodatime.Converters
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.jaredrummler.cyanea.app.CyaneaAppCompatActivity
+import com.jaredrummler.cyanea.prefs.CyaneaSettingsActivity
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
@@ -25,7 +24,6 @@ import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.helpers.UndoHelper
 import com.mikepenz.fastadapter.swipe.SimpleSwipeCallback
 import kotlinx.android.synthetic.main.activity_main.*
-import musubidevs.android.greenwich.fragment.ThemePickerFragment
 import musubidevs.android.greenwich.layout.SingleColumnCardMargin
 import musubidevs.android.greenwich.model.Conversion
 import java.util.*
@@ -34,17 +32,13 @@ import java.util.*
  * @author anticobalt
  * @author jmmxp
  */
-class MainActivity: AppCompatActivity(), ItemTouchCallback, SimpleSwipeCallback.ItemSwipeCallback {
-
+class MainActivity: CyaneaAppCompatActivity(), ItemTouchCallback, SimpleSwipeCallback.ItemSwipeCallback {
     private lateinit var itemAdapter: ItemAdapter<ConversionItem>
     private lateinit var fastAdapter: FastAdapter<ConversionItem>
     private lateinit var undoHelper: UndoHelper<ConversionItem>
     private val gson = Converters.registerDateTime(GsonBuilder()).create()
-    val colorWithPrimaryCallbacks = arrayListOf<(Int) -> Unit>()
-    val colorWithAccentCallbacks = arrayListOf<(Int) -> Unit>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         conversionRecycler.layoutManager = LinearLayoutManager(this)
@@ -53,8 +47,6 @@ class MainActivity: AppCompatActivity(), ItemTouchCallback, SimpleSwipeCallback.
         setRecyclerSpacing()
         setGestures()
         setAdapter()
-        setThemePreviewCallbacks()
-        setThemeFromPreferences()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -64,7 +56,9 @@ class MainActivity: AppCompatActivity(), ItemTouchCallback, SimpleSwipeCallback.
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.theme -> ThemePickerFragment().show(supportFragmentManager, "themePicker")
+            R.id.theme -> {
+                startActivity(Intent(this, CyaneaSettingsActivity::class.java))
+            }
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -135,29 +129,6 @@ class MainActivity: AppCompatActivity(), ItemTouchCallback, SimpleSwipeCallback.
             ) {
             }
         })
-    }
-
-    private fun setThemePreviewCallbacks() {
-        colorWithPrimaryCallbacks.add { colorInt: Int ->
-            supportActionBar?.setBackgroundDrawable(ColorDrawable(colorInt))
-        }
-        colorWithAccentCallbacks.add { colorInt: Int ->
-            createConversionButton.backgroundTintList = ColorStateList.valueOf(colorInt)
-        }
-    }
-
-    private fun setThemeFromPreferences() {
-        val prefs = getSharedPreferences(MAIN_PREFS, Context.MODE_PRIVATE)
-        val primary = prefs.getInt(PRIMARY_COLOR, ContextCompat.getColor(this, R.color.colorPrimary))
-        val accent = prefs.getInt(ACCENT_COLOR, ContextCompat.getColor(this, R.color.colorAccent))
-
-        for (callback in colorWithPrimaryCallbacks) {
-            callback(primary)
-        }
-
-        for (callback in colorWithAccentCallbacks) {
-            callback(accent)
-        }
     }
 
     private fun addNewConversion() {

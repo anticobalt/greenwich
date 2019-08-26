@@ -54,4 +54,6 @@ dependencies {
     implementation "com.mikepenz:fastadapter-extensions-drag:4.1.0-b01"
     implementation "com.mikepenz:fastadapter-extensions-swipe:4.1.0-b01"
     implementation "com.mikepenz:fastadapter-extensions-utils:4.1.0-b01"
+
+    implementation 'com.jaredrummler:cyanea:1.0.2'
 }

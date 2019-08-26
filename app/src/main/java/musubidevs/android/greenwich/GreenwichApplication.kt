@@ -1,5 +1,5 @@
 package musubidevs.android.greenwich
 
-import android.app.Application
+import com.jaredrummler.cyanea.CyaneaApp
 
-class GreenwichApplication : Application()
+class GreenwichApplication : CyaneaApp()
