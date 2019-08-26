@@ -18,7 +18,7 @@ import com.google.gson.reflect.TypeToken
 import com.jaredrummler.cyanea.app.CyaneaAppCompatActivity
 import com.jaredrummler.cyanea.prefs.CyaneaSettingsActivity
 import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.adapters.FastItemAdapter
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.helpers.UndoHelper
@@ -32,13 +32,18 @@ import java.util.*
  * @author anticobalt
  * @author jmmxp
  */
-class MainActivity: CyaneaAppCompatActivity(), ItemTouchCallback, SimpleSwipeCallback.ItemSwipeCallback {
-    private lateinit var itemAdapter: ItemAdapter<ConversionItem>
-    private lateinit var fastAdapter: FastAdapter<ConversionItem>
+class MainActivity : CyaneaAppCompatActivity(), ItemTouchCallback,
+    SimpleSwipeCallback.ItemSwipeCallback {
+    private lateinit var adapter: FastItemAdapter<ConversionItem>
     private lateinit var undoHelper: UndoHelper<ConversionItem>
     private val gson = Converters.registerDateTime(GsonBuilder()).create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val resId = getSharedPreferences(MAIN_PREFS, Context.MODE_PRIVATE)
+            .getInt(THEME_PREFS_KEY, R.style.DayTheme)
+        setTheme(resId)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         conversionRecycler.layoutManager = LinearLayoutManager(this)
@@ -56,8 +61,16 @@ class MainActivity: CyaneaAppCompatActivity(), ItemTouchCallback, SimpleSwipeCal
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.theme -> {
-                startActivity(Intent(this, CyaneaSettingsActivity::class.java))
+            R.id.theme -> startActivity(Intent(this, CyaneaSettingsActivity::class.java))
+            R.id.day_night_mode -> {
+                val prefs = getSharedPreferences(MAIN_PREFS, Context.MODE_PRIVATE)
+                val currentThemeResId = prefs.getInt(THEME_PREFS_KEY, R.style.DayTheme)
+                val newTheme =
+                    if (currentThemeResId == R.style.DayTheme) R.style.NightTheme else R.style.DayTheme
+                prefs.edit {
+                    putInt(THEME_PREFS_KEY, newTheme)
+                }
+                recreate()
             }
             else -> return super.onOptionsItemSelected(item)
         }
@@ -66,11 +79,12 @@ class MainActivity: CyaneaAppCompatActivity(), ItemTouchCallback, SimpleSwipeCal
 
     override fun onResume() {
         super.onResume()
-        itemAdapter.set(readConversionsFromPrefs().map {
+        adapter.set(readConversionsFromPrefs().map {
             ConversionItem(
                 it,
+                true,
                 supportFragmentManager,
-                fastAdapter
+                adapter
             )
         })
 
@@ -110,7 +124,7 @@ class MainActivity: CyaneaAppCompatActivity(), ItemTouchCallback, SimpleSwipeCal
                 this,
                 null,
                 bgColorLeft = Color.TRANSPARENT
-            ).withLeaveBehindSwipeLeft(getDrawable(R.drawable.ic_check_white_24dp)!!)
+            )
         )
         val dragCallback = ItemTouchHelper(SimpleDragCallback())
         swipeCallback.attachToRecyclerView(conversionRecycler)
@@ -118,24 +132,26 @@ class MainActivity: CyaneaAppCompatActivity(), ItemTouchCallback, SimpleSwipeCal
     }
 
     private fun setAdapter() {
-        itemAdapter = ItemAdapter()
-        fastAdapter = FastAdapter.with(itemAdapter)
-        conversionRecycler.adapter = fastAdapter
+        adapter = FastItemAdapter()
+        conversionRecycler.adapter = adapter
 
-        undoHelper = UndoHelper(fastAdapter, object : UndoHelper.UndoListener<ConversionItem> {
+        undoHelper = UndoHelper(adapter, object : UndoHelper.UndoListener<ConversionItem> {
             override fun commitRemove(
                 positions: Set<Int>,
                 removed: ArrayList<FastAdapter.RelativeInfo<ConversionItem>>
             ) {
+                // No implementation required
             }
         })
     }
 
     private fun addNewConversion() {
-        itemAdapter.add(
+        adapter.add(
             0, ConversionItem(
-                Conversion(), supportFragmentManager,
-                fastAdapter
+                Conversion(),
+                true,
+                supportFragmentManager,
+                adapter
             )
         )
         conversionRecycler.smoothScrollToPosition(0)
@@ -146,7 +162,7 @@ class MainActivity: CyaneaAppCompatActivity(), ItemTouchCallback, SimpleSwipeCal
         prefs.edit {
             putString(
                 CONVERSIONS_PREFS_KEY,
-                gson.toJson(itemAdapter.adapterItems.map { it.conversion })
+                gson.toJson(adapter.adapterItems.map { it.conversion })
             )
         }
     }
@@ -168,7 +184,7 @@ class MainActivity: CyaneaAppCompatActivity(), ItemTouchCallback, SimpleSwipeCal
     }
 
     override fun itemTouchDropped(oldPosition: Int, newPosition: Int) {
-        val items = itemAdapter.adapterItems
+        val items = adapter.adapterItems.toTypedArray()
         val temp = items[oldPosition]
         items[oldPosition] = items[newPosition]
         items[newPosition] = temp
@@ -176,6 +192,8 @@ class MainActivity: CyaneaAppCompatActivity(), ItemTouchCallback, SimpleSwipeCal
 
     override fun itemSwiped(position: Int, direction: Int) {
         if (direction == ItemTouchHelper.LEFT) {
+            val holder = conversionRecycler.findViewHolderForAdapterPosition(position) as ConversionItem.ConversionViewHolder
+            holder.hideView()
             val snackbar = undoHelper.remove(
                 mainConstraintLayout,
                 getString(R.string.delete_conversion),
@@ -185,13 +203,13 @@ class MainActivity: CyaneaAppCompatActivity(), ItemTouchCallback, SimpleSwipeCal
             )
             // https://stackoverflow.com/a/57417537
             snackbar.view.findViewById<Button?>(R.id.snackbar_action)?.background = null
+
         }
     }
 
     companion object {
         const val MAIN_PREFS = "main_prefs"
         const val CONVERSIONS_PREFS_KEY = "conversions"
-        const val PRIMARY_COLOR = "primary_color"
-        const val ACCENT_COLOR = "accent_color"
+        const val THEME_PREFS_KEY = "theme"
     }
 }

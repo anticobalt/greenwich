@@ -10,4 +10,6 @@
     <string name="delete_conversion">Conversion removed</string>
     <string name="delete_undo">Undo</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="theme">Theme</string>
+    <string name="day_night_mode">Day/Night Mode</string>
 </resources>

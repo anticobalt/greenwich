@@ -1,26 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="cyanea_primary_reference">@color/sea_green</color>
-    <color name="cyanea_accent_reference">@color/myriad_magenta</color>
+    <color name="cyanea_primary_reference">#4caf50</color>
+    <color name="cyanea_accent_reference">#66bb6a</color>
 
-    <color name="colorSourceCard">@color/white</color>
     <color name="colorClickable">#5B67FF</color>
     <color name="white">#FFF</color>
     <color name="black">#000</color>
-
-    <!-- For themes -->
-    <color name="dodger_blue">#5B67FF</color>
-    <color name="sea_green">#2E8B57</color>
-    <color name="fruit_salad">#4CAF50</color>
-    <color name="tangerine">#EB9800</color>
-    <color name="lynch">#727D84</color>
-    <color name="coffee">#7D6757</color>
-    <color name="idle_pink">#FE88BA</color>
-    <color name="boppin_blue">#55DDED</color>
-    <color name="astral_yellow">#FBD87A</color>
-    <color name="myriad_magenta">#881187</color>
-    <color name="resolute_cyan">#00AABB</color>
-    <color name="fashion_red">#DD2200</color>
+    <color name="space">#2D343A</color>
 
 </resources>

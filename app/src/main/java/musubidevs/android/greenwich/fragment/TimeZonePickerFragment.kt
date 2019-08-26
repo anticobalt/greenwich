@@ -1,10 +1,10 @@
 package musubidevs.android.greenwich.fragment
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.widget.NumberPicker
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import musubidevs.android.greenwich.R
 import musubidevs.android.greenwich.model.SourceTimestamp
@@ -21,7 +21,7 @@ class TimeZonePickerFragment(
 ) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialogBuilder = AlertDialog.Builder(context)
+        val dialogBuilder = AlertDialog.Builder(context!!)
         val numberPicker = View.inflate(
             context,
             R.layout.dialog_time_zone_picker,

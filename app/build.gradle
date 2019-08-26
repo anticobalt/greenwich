@@ -46,14 +46,12 @@ dependencies {
     implementation 'joda-time:joda-time:2.10.3'
     implementation 'com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.8.0'
 
-    // Themes
-    implementation 'com.thebluealliance:spectrum:0.7.1'
-
     // FastAdapter
     implementation "com.mikepenz:fastadapter:4.1.0-b01"
     implementation "com.mikepenz:fastadapter-extensions-drag:4.1.0-b01"
     implementation "com.mikepenz:fastadapter-extensions-swipe:4.1.0-b01"
     implementation "com.mikepenz:fastadapter-extensions-utils:4.1.0-b01"
 
+    // Themes
     implementation 'com.jaredrummler:cyanea:1.0.2'
 }

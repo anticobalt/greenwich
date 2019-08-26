@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
+import com.mikepenz.fastadapter.swipe.ISwipeable
 import kotlinx.android.synthetic.main.list_item_conversion.view.*
 import musubidevs.android.greenwich.fragment.DatePickerFragment
 import musubidevs.android.greenwich.fragment.TimePickerFragment
@@ -20,9 +21,10 @@ import musubidevs.android.greenwich.model.Timestamp
  */
 class ConversionItem(
     val conversion: Conversion,
+    override val isSwipeable: Boolean,
     private val fragmentManager: FragmentManager,
     private val adapter: FastAdapter<ConversionItem>
-): AbstractItem<ConversionItem.ConversionViewHolder>() {
+) : ISwipeable, AbstractItem<ConversionItem.ConversionViewHolder>() {
 
     override val layoutRes: Int
         get() = R.layout.list_item_conversion
@@ -41,7 +43,14 @@ class ConversionItem(
     ) :
         FastAdapter.ViewHolder<ConversionItem>(itemView) {
 
+        fun hideView() {
+            itemView.visibility = View.GONE
+        }
+
         override fun bindView(item: ConversionItem, payloads: MutableList<Any>) {
+            // ensure always visible when creating or undoing removal
+            itemView.visibility = View.VISIBLE
+
             this.conversion = item.conversion
             this.sourceTimestamp = conversion.sourceTimestamp
             this.targetTimestamp = conversion.targetTimestamp
@@ -114,10 +123,6 @@ class ConversionItem(
         private fun update(newTimestamp: Timestamp) {
             conversion.updateTimestamp(newTimestamp)
             adapter.notifyItemChanged(adapterPosition)
-        }
-
-        fun getEditableTextViews(): List<TextView> {
-            return listOf(sourceDateView, sourceTimeView, sourceTimeZoneView, targetTimeZoneView)
         }
     }
 

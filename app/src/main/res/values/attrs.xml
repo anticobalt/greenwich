@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GreenwichAppTheme">
+        <attr name="defaultTextColor" format="color" />
+        <attr name="cardBgColor" format="color" />
+    </declare-styleable>
+</resources>
