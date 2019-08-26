@@ -29,7 +29,7 @@ class TimeZonePickerFragment(
         ) as NumberPicker
         numberPicker.minValue = 0
         numberPicker.maxValue = UTC_OFFSETS.size - 1
-        val utcOffsetStrings = UTC_OFFSETS.map { offset -> offset.toLongString() }
+        val utcOffsetStrings = UTC_OFFSETS.map { offset -> offset.toString() }
         numberPicker.displayedValues = utcOffsetStrings.toTypedArray()
         numberPicker.value = getCurrentOffsetIndex()
 

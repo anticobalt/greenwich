@@ -32,17 +32,6 @@ class UtcOffset(private val hours: Int, private val minutes: Int) {
         return if (hours < 0 || minutes < 0) -millis else millis
     }
 
-    fun toLongString(): String {
-        if (hours == 0 && minutes == 0) {
-            return "±00:00"
-        }
-
-        val hourStr = abs(hours).toString().padStart(2, '0')
-        val minStr = abs(minutes).toString().padStart(2, '0')
-
-        return if (hours > 0 && minutes >= 0) "UTC+$hourStr:$minStr" else "UTC−$hourStr:$minStr"
-    }
-
     override fun toString(): String {
         if (hours == 0 && minutes == 0) return "UTC±0"
 

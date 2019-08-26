@@ -17,7 +17,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.jaredrummler.cyanea.app.CyaneaAppCompatActivity
-import com.jaredrummler.cyanea.prefs.CyaneaSettingsActivity
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.FastItemAdapter
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
@@ -29,9 +28,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import musubidevs.android.greenwich.item.ConversionItem
 import musubidevs.android.greenwich.R
 import musubidevs.android.greenwich.helper.TimeZoneFetcher
+import musubidevs.android.greenwich.item.ConversionItem
 import musubidevs.android.greenwich.layout.SingleColumnCardMargin
 import musubidevs.android.greenwich.model.Conversion
 import java.util.*
@@ -80,7 +79,7 @@ class MainActivity : CyaneaAppCompatActivity(), ItemTouchCallback,
                 waitForTimeZoneItems()
 
             }
-            R.id.theme -> startActivity(Intent(this, CyaneaSettingsActivity::class.java))
+            R.id.theme -> startActivity(Intent(this, ThemeActivity::class.java))
             R.id.day_night_mode -> {
                 val prefs = getSharedPreferences(MAIN_PREFS, Context.MODE_PRIVATE)
                 val currentThemeResId = prefs.getInt(
@@ -94,9 +93,9 @@ class MainActivity : CyaneaAppCompatActivity(), ItemTouchCallback,
                 }
                 recreate()
             }
-            else -> return super.onOptionsItemSelected(item)
         }
-        return true
+
+        return false
     }
 
     override fun onResume() {
@@ -119,7 +118,7 @@ class MainActivity : CyaneaAppCompatActivity(), ItemTouchCallback,
 
     /**
      * Add spacing between items that doesn't double-up when re-sorted them via drag.
-     * Doubling-up is caused by spacing dependant on position not being reset when item's position
+     * Doubling-up is caused by spacing dependent on position not being reset when item's position
      * changes.
      *
      * Basically, all items have space on top, and no space on bottom. RecyclerView has "see-through"

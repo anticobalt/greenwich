@@ -11,9 +11,10 @@ import com.jaredrummler.cyanea.app.CyaneaAppCompatActivity
 import com.mikepenz.fastadapter.adapters.FastItemAdapter
 import com.mikepenz.fastadapter.listeners.ItemFilterListener
 import kotlinx.android.synthetic.main.activity_time_zone.*
+import kotlinx.android.synthetic.main.list_item_time_zone.*
 import musubidevs.android.greenwich.R
 import musubidevs.android.greenwich.item.TimeZoneItem
-import musubidevs.android.greenwich.layout.SingleColumnCardMargin
+import musubidevs.android.greenwich.layout.TimeZoneCardMargin
 import musubidevs.android.greenwich.model.UtcOffset
 import org.joda.time.DateTimeZone
 
@@ -32,8 +33,7 @@ class TimeZoneActivity : CyaneaAppCompatActivity(), ItemFilterListener<TimeZoneI
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         timeZoneRecycler.layoutManager = LinearLayoutManager(this)
-        defaultTimeZoneView.text = getDefaultTimeZoneText()
-
+        setDefaultTimeZoneViews()
         setRecyclerSpacing()
         setAdapter()
 
@@ -67,17 +67,13 @@ class TimeZoneActivity : CyaneaAppCompatActivity(), ItemFilterListener<TimeZoneI
     }
 
     /**
-     * Same as [MainActivity.setRecyclerSpacing]: see its docs for rationale.
+     * Similar to [MainActivity.setRecyclerSpacing]: top of item has no margin,
+     * but RecyclerView has padding with no clipping, to give illusion of space.
      */
     private fun setRecyclerSpacing() {
-        timeZoneRecycler.addItemDecoration(
-            SingleColumnCardMargin(
-                resources.getDimensionPixelSize(
-                    R.dimen.card_margin
-                )
-            )
-        )
-        timeZoneRecycler.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.card_margin))
+        val margin = resources.getDimensionPixelSize(R.dimen.card_margin)
+        timeZoneRecycler.addItemDecoration(TimeZoneCardMargin(margin))
+        timeZoneRecycler.setPadding(0, margin, 0, 0)
     }
 
     /**
@@ -111,10 +107,13 @@ class TimeZoneActivity : CyaneaAppCompatActivity(), ItemFilterListener<TimeZoneI
         // Implementation not required
     }
 
-    private fun getDefaultTimeZoneText(): String {
+    private fun setDefaultTimeZoneViews() {
         val region = DateTimeZone.getDefault().id
         val offset = UtcOffset.default().toString()
-        return "Your default timezone: $region, $offset"
+        regionView.text = region
+        offsetView.text = offset
+        regionView.setTextColor(cyanea.accent)
+        offsetView.setTextColor(cyanea.accent)
     }
 
     companion object {

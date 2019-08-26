@@ -13,15 +13,15 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/region"
+            android:id="@+id/regionView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:textColor="?defaultTextColor"
             android:fontFamily="@font/open_sans"
-            android:layout_weight="3" />
+            android:layout_weight="4" />
 
         <TextView
-            android:id="@+id/utcOffset"
+            android:id="@+id/offsetView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:textColor="?defaultTextColor"
