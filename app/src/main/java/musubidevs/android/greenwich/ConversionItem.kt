@@ -16,6 +16,8 @@ import musubidevs.android.greenwich.model.TargetTimestamp
 import musubidevs.android.greenwich.model.Timestamp
 
 /**
+ * Represents a Conversion object. Has pickers. Is draggable and can be deleted via swipe gesture.
+ *
  * @author jmmxp
  * @author anticobalt
  */

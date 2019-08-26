@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
 /**
+ * Represents a timezone as an offset of UTC.
+ *
  * @author jmmxp
  */
 class UtcOffset(private val hours: Int, private val minutes: Int) {

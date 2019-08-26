@@ -29,6 +29,8 @@ import musubidevs.android.greenwich.model.Conversion
 import java.util.*
 
 /**
+ * Shows a list of all conversions.
+ *
  * @author anticobalt
  * @author jmmxp
  */

@@ -3,6 +3,8 @@ package musubidevs.android.greenwich.model
 import java.io.Serializable
 
 /**
+ * Has a FROM date/time/timezone and TO date/time/timezone.
+ *
  * @author jmmxp
  */
 data class Conversion(

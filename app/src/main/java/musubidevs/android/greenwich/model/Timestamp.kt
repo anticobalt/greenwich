@@ -7,6 +7,8 @@ import org.joda.time.LocalTime
 import java.text.SimpleDateFormat
 
 /**
+ * Represents an instant in time, with a timezone, date, and time.
+ *
  * @author anticobalt
  * @author jmmxp
  */
