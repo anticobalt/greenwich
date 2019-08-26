@@ -1,5 +1,6 @@
 package musubidevs.android.greenwich.model
 
+import org.joda.time.DateTimeZone
 import java.io.Serializable
 
 /**
@@ -11,6 +12,11 @@ data class Conversion(
     var sourceTimestamp: SourceTimestamp = SourceTimestamp(),
     var targetTimestamp: TargetTimestamp = TargetTimestamp()
 ): Serializable {
+
+    init {
+        targetTimestamp = targetTimestamp.withOffset(UtcOffset.from(DateTimeZone.UTC))
+    }
+
     fun updateTimestamp(timestamp: Timestamp) {
         when (timestamp) {
             is SourceTimestamp -> {

@@ -22,7 +22,7 @@ class TargetTimestamp(
         return TargetTimestamp(newTargetDateTime, utcOffset)
     }
 
-    override fun withOffset(utcOffset: UtcOffset): Timestamp {
+    override fun withOffset(utcOffset: UtcOffset): TargetTimestamp {
         val difference =  utcOffset.toMillis() - this.utcOffset.toMillis()
         val newDateTime = if (difference < 0) dateTime.minus(abs(difference)) else dateTime.plus(difference)
         return TargetTimestamp(newDateTime, utcOffset)

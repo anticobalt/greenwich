@@ -1,5 +1,6 @@
-package musubidevs.android.greenwich
+package musubidevs.android.greenwich.activity
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -24,6 +25,13 @@ import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.helpers.UndoHelper
 import com.mikepenz.fastadapter.swipe.SimpleSwipeCallback
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import musubidevs.android.greenwich.item.ConversionItem
+import musubidevs.android.greenwich.R
+import musubidevs.android.greenwich.helper.TimeZoneFetcher
 import musubidevs.android.greenwich.layout.SingleColumnCardMargin
 import musubidevs.android.greenwich.model.Conversion
 import java.util.*
@@ -36,14 +44,19 @@ import java.util.*
  */
 class MainActivity : CyaneaAppCompatActivity(), ItemTouchCallback,
     SimpleSwipeCallback.ItemSwipeCallback {
+
     private lateinit var adapter: FastItemAdapter<ConversionItem>
     private lateinit var undoHelper: UndoHelper<ConversionItem>
     private val gson = Converters.registerDateTime(GsonBuilder()).create()
+    private val timeZoneFetcher = TimeZoneFetcher().fetch()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val resId = getSharedPreferences(MAIN_PREFS, Context.MODE_PRIVATE)
-            .getInt(THEME_PREFS_KEY, R.style.DayTheme)
+            .getInt(
+                THEME_PREFS_KEY,
+                R.style.DayTheme
+            )
         setTheme(resId)
 
         super.onCreate(savedInstanceState)
@@ -63,10 +76,17 @@ class MainActivity : CyaneaAppCompatActivity(), ItemTouchCallback,
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
+            R.id.time_zone_activity -> {
+                waitForTimeZoneItems()
+
+            }
             R.id.theme -> startActivity(Intent(this, CyaneaSettingsActivity::class.java))
             R.id.day_night_mode -> {
                 val prefs = getSharedPreferences(MAIN_PREFS, Context.MODE_PRIVATE)
-                val currentThemeResId = prefs.getInt(THEME_PREFS_KEY, R.style.DayTheme)
+                val currentThemeResId = prefs.getInt(
+                    THEME_PREFS_KEY,
+                    R.style.DayTheme
+                )
                 val newTheme =
                     if (currentThemeResId == R.style.DayTheme) R.style.NightTheme else R.style.DayTheme
                 prefs.edit {
@@ -147,6 +167,35 @@ class MainActivity : CyaneaAppCompatActivity(), ItemTouchCallback,
         })
     }
 
+    private fun waitForTimeZoneItems() {
+
+        var dialogDismissedEarly = false
+        val dialog = ProgressDialog(this@MainActivity)
+        dialog.setTitle("Getting all time zones")
+        dialog.setMessage("Loading...")
+        dialog.show()
+        dialog.setOnDismissListener {
+            dialogDismissedEarly = true
+        }
+
+        GlobalScope.launch(Dispatchers.Default) {
+            while (timeZoneFetcher.timeZoneItems.isEmpty()) {
+                // Loop until time zones are finished loading
+            }
+            withContext(Dispatchers.Main) {
+                if (!dialogDismissedEarly) {
+                    val intent = Intent(this@MainActivity, TimeZoneActivity::class.java)
+                    intent.putParcelableArrayListExtra(
+                        TimeZoneActivity.KEY_TIME_ZONE_ITEMS,
+                        ArrayList(timeZoneFetcher.timeZoneItems)
+                    )
+                    startActivity(intent)
+                    dialog.dismiss()
+                }
+            }
+        }
+    }
+
     private fun addNewConversion() {
         adapter.add(
             0, ConversionItem(
@@ -194,7 +243,8 @@ class MainActivity : CyaneaAppCompatActivity(), ItemTouchCallback,
 
     override fun itemSwiped(position: Int, direction: Int) {
         if (direction == ItemTouchHelper.LEFT) {
-            val holder = conversionRecycler.findViewHolderForAdapterPosition(position) as ConversionItem.ConversionViewHolder
+            val holder =
+                conversionRecycler.findViewHolderForAdapterPosition(position) as ConversionItem.ConversionViewHolder
             holder.hideView()
             val snackbar = undoHelper.remove(
                 mainConstraintLayout,
@@ -211,7 +261,7 @@ class MainActivity : CyaneaAppCompatActivity(), ItemTouchCallback,
 
     companion object {
         const val MAIN_PREFS = "main_prefs"
-        const val CONVERSIONS_PREFS_KEY = "conversions"
         const val THEME_PREFS_KEY = "theme"
+        private const val CONVERSIONS_PREFS_KEY = "conversions"
     }
 }

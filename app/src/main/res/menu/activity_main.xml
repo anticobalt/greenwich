@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/time_zone_activity"
+        android:icon="@drawable/ic_time_white_24dp"
+        android:title="@string/time_zone_reference"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/day_night_mode"
         android:icon="@drawable/ic_invert_colors_white_24dp"
         android:title="@string/day_night_mode"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/theme"
         android:icon="@drawable/ic_palette_white_24dp"
         android:title="@string/theme"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+        app:showAsAction="ifRoom" />
 
 </menu>

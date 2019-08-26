@@ -1,4 +1,4 @@
-package musubidevs.android.greenwich
+package musubidevs.android.greenwich.item
 
 import android.view.View
 import android.widget.TextView
@@ -7,6 +7,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.swipe.ISwipeable
 import kotlinx.android.synthetic.main.list_item_conversion.view.*
+import musubidevs.android.greenwich.R
 import musubidevs.android.greenwich.fragment.DatePickerFragment
 import musubidevs.android.greenwich.fragment.TimePickerFragment
 import musubidevs.android.greenwich.fragment.TimeZonePickerFragment
@@ -35,7 +36,11 @@ class ConversionItem(
         get() = R.id.conversionView
 
     override fun getViewHolder(v: View): ConversionViewHolder {
-        return ConversionViewHolder(v, fragmentManager, adapter)
+        return ConversionViewHolder(
+            v,
+            fragmentManager,
+            adapter
+        )
     }
 
     class ConversionViewHolder(
@@ -44,38 +49,6 @@ class ConversionItem(
         private val adapter: FastAdapter<ConversionItem>
     ) :
         FastAdapter.ViewHolder<ConversionItem>(itemView) {
-
-        fun hideView() {
-            itemView.visibility = View.GONE
-        }
-
-        override fun bindView(item: ConversionItem, payloads: MutableList<Any>) {
-            // ensure always visible when creating or undoing removal
-            itemView.visibility = View.VISIBLE
-
-            this.conversion = item.conversion
-            this.sourceTimestamp = conversion.sourceTimestamp
-            this.targetTimestamp = conversion.targetTimestamp
-
-            sourceDateView.text = sourceTimestamp.dateString
-            sourceTimeView.text = sourceTimestamp.timeString
-            sourceTimeZoneView.text =
-                itemView.context.getString(R.string.utc, sourceTimestamp.utcOffsetString)
-
-            targetDateView.text = targetTimestamp.dateString
-            targetTimeView.text = targetTimestamp.timeString
-            targetTimeZoneView.text =
-                itemView.context.getString(R.string.utc, targetTimestamp.utcOffsetString)
-        }
-
-        override fun unbindView(item: ConversionItem) {
-            sourceDateView.text = null
-            sourceTimeView.text = null
-            sourceTimeZoneView.text = null
-            targetDateView.text = null
-            targetTimeView.text = null
-            targetTimeZoneView.text = null
-        }
 
         private lateinit var conversion: Conversion
         private lateinit var sourceTimestamp: SourceTimestamp
@@ -90,6 +63,36 @@ class ConversionItem(
         init {
             setSourceOnClicks()
             setTargetOnClicks()
+        }
+
+        fun hideView() {
+            itemView.visibility = View.GONE
+        }
+
+        override fun bindView(item: ConversionItem, payloads: MutableList<Any>) {
+            // ensure always visible after creating or undoing removal
+            itemView.visibility = View.VISIBLE
+
+            this.conversion = item.conversion
+            this.sourceTimestamp = conversion.sourceTimestamp
+            this.targetTimestamp = conversion.targetTimestamp
+
+            sourceDateView.text = sourceTimestamp.dateString
+            sourceTimeView.text = sourceTimestamp.timeString
+            sourceTimeZoneView.text = sourceTimestamp.utcOffsetString
+
+            targetDateView.text = targetTimestamp.dateString
+            targetTimeView.text = targetTimestamp.timeString
+            targetTimeZoneView.text = targetTimestamp.utcOffsetString
+        }
+
+        override fun unbindView(item: ConversionItem) {
+            sourceDateView.text = null
+            sourceTimeView.text = null
+            sourceTimeZoneView.text = null
+            targetDateView.text = null
+            targetTimeView.text = null
+            targetTimeZoneView.text = null
         }
 
         private fun setSourceOnClicks() {
