@@ -115,6 +115,10 @@ class ConversionItem(
             conversion.updateTimestamp(newTimestamp)
             adapter.notifyItemChanged(adapterPosition)
         }
+
+        fun getEditableTextViews(): List<TextView> {
+            return listOf(sourceDateView, sourceTimeView, sourceTimeZoneView, targetTimeZoneView)
+        }
     }
 
 }

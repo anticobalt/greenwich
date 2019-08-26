@@ -15,12 +15,7 @@ class SingleColumnCardMargin(private val space : Int) : RecyclerView.ItemDecorat
         outRect.left = space
         outRect.right = space
         outRect.top = space
-
-        if (parent.getChildLayoutPosition(view) == state.itemCount - 1) {
-            outRect.bottom = space
-        } else {
-            outRect.bottom = 0
-        }
+        outRect.bottom = 0
     }
 
 }

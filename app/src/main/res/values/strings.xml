@@ -7,4 +7,6 @@
     <string name="theme_dialog_title">Choose Theme Colors</string>
     <string name="theme_dialog_subtitle_primary">Primary Color</string>
     <string name="theme_dialog_subtitle_accent">Accent Color</string>
+    <string name="delete_conversion">Conversion removed</string>
+    <string name="delete_undo">Undo</string>
 </resources>
