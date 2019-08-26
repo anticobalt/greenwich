@@ -33,12 +33,12 @@ class TimeZonePickerFragment(
         numberPicker.displayedValues = utcOffsetStrings.toTypedArray()
         numberPicker.value = getCurrentOffsetIndex()
 
-        val title = if (currentTimestamp is SourceTimestamp) "What time zone are you in?"
-        else "What time zone are you converting to?"
+        val title = if (currentTimestamp is SourceTimestamp) getString(R.string.time_zone_from)
+        else getString(R.string.time_zone_to)
         return dialogBuilder
             .setView(numberPicker)
             .setTitle(title)
-            .setPositiveButton("OK") { _, _ ->
+            .setPositiveButton(getString(R.string.ok)) { _, _ ->
                 onTimeZoneSet(numberPicker.value)
             }.create()
     }

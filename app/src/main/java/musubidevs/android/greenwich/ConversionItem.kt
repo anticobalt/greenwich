@@ -19,10 +19,11 @@ import musubidevs.android.greenwich.model.Timestamp
  * @author anticobalt
  */
 class ConversionItem(
-    private val conversion: Conversion,
+    val conversion: Conversion,
     private val fragmentManager: FragmentManager,
     private val adapter: FastAdapter<ConversionItem>
-) : AbstractItem<ConversionItem.ConversionViewHolder>() {
+): AbstractItem<ConversionItem.ConversionViewHolder>() {
+
     override val layoutRes: Int
         get() = R.layout.list_item_conversion
 

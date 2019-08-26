@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Greenwich</string>
     <string name="utc">UTC%1$s</string>
+    <string name="time_zone_from">What time zone are you in?</string>
+    <string name="time_zone_to">What time zone are you converting to?</string>
+    <string name="ok">OK</string>
+    <string name="theme_dialog_title">Choose Theme Colors</string>
+    <string name="theme_dialog_subtitle_primary">Primary Color</string>
+    <string name="theme_dialog_subtitle_accent">Accent Color</string>
 </resources>

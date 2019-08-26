@@ -1,20 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:paddingBottom="10dp"
+    android:paddingTop="20dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
-    <com.github.naz013.colorslider.ColorSlider
-        android:id="@+id/color_slider_primary"
-        android:layout_width="match_parent"
-        app:cs_colors="@array/theme_colors"
-        android:layout_height="36dp" />
+    <TextView
+        android:id="@+id/primaryTitle"
+        android:textSize="20sp"
+        android:paddingBottom="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/theme_dialog_subtitle_primary"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.github.naz013.colorslider.ColorSlider
-        android:id="@+id/color_slider_accent"
-        android:layout_width="match_parent"
-        app:cs_colors="@array/theme_colors"
-        android:layout_height="36dp" />
+    <com.thebluealliance.spectrum.SpectrumPalette
+        android:id="@+id/primaryColors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/primaryTitle"
+        app:spectrum_colors="@array/theme_colors"
+        app:spectrum_columnCount="4" />
 
-</LinearLayout>
+    <Space
+        android:id="@+id/space"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/primaryColors" />
+
+    <TextView
+        android:id="@+id/accentTitle"
+        android:textSize="20sp"
+        android:paddingBottom="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/theme_dialog_subtitle_accent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/space" />
+
+    <com.thebluealliance.spectrum.SpectrumPalette
+        android:id="@+id/accentColors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/accentTitle"
+        app:spectrum_colors="@array/theme_colors"
+        app:spectrum_columnCount="4" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
