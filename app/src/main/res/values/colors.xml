@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="cyanea_primary_reference">#4caf50</color>
+    <color name="cyanea_primary_reference">#4CAF50</color>
     <color name="cyanea_accent_reference">#66bb6a</color>
 
-    <color name="colorClickable">#5B67FF</color>
     <color name="white">#FFF</color>
     <color name="black">#000</color>
     <color name="space">#2D343A</color>

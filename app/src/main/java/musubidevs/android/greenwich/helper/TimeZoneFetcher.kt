@@ -15,6 +15,9 @@ import org.joda.time.DateTimeZone
  *  3) are not aliases for Etc timezones (e.g. UTC).
  *
  * Timezone strings are also reformatted.
+ *
+ * @author anticobalt
+ * @author jmmxp
  */
 class TimeZoneFetcher {
     var timeZoneItems = mutableListOf<TimeZoneItem>()
