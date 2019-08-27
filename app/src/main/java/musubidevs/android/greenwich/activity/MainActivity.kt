@@ -77,7 +77,6 @@ class MainActivity : CyaneaAppCompatActivity(), ItemTouchCallback,
         when (item?.itemId) {
             R.id.time_zone_activity -> {
                 waitForTimeZoneItems()
-
             }
             R.id.theme -> startActivity(Intent(this, ThemeActivity::class.java))
             R.id.day_night_mode -> {
