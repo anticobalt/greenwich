@@ -5,7 +5,7 @@
         <item name="defaultTextColor">@color/black</item>
         <item name="cardBgColor">@color/white</item>
     </style>
-    <style name="NightTheme" parent="Theme.Cyanea.Dark.LightActionBar">
+    <style name="NightTheme" parent="Theme.Cyanea.Light.DarkActionBar">
         <item name="defaultTextColor">@color/white</item>
         <item name="cardBgColor">@color/space</item>
     </style>
