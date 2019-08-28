@@ -12,4 +12,5 @@
     <string name="time_zone_reference">Time Zones</string>
     <string name="search">Search</string>
     <string name="themes">Themes</string>
+    <string name="time_zone_search_hint">Search by ID or offset…</string>
 </resources>

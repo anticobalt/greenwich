@@ -16,6 +16,8 @@ import musubidevs.android.greenwich.R
 import musubidevs.android.greenwich.item.TimeZoneItem
 import musubidevs.android.greenwich.layout.TimeZoneCardMargin
 import musubidevs.android.greenwich.model.UtcOffset
+import musubidevs.android.greenwich.model.UtcOffset.Companion.minusSign
+import musubidevs.android.greenwich.model.UtcOffset.Companion.plusSign
 import org.joda.time.DateTimeZone
 
 class TimeZoneActivity : CyaneaAppCompatActivity(), ItemFilterListener<TimeZoneItem> {
@@ -42,7 +44,8 @@ class TimeZoneActivity : CyaneaAppCompatActivity(), ItemFilterListener<TimeZoneI
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search, menu)
 
-        (menu.findItem(R.id.search).actionView as SearchView).setOnQueryTextListener(object :
+        val search = (menu.findItem(R.id.search).actionView as SearchView)
+        search.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 fastItemAdapter.filter(query)
@@ -54,6 +57,7 @@ class TimeZoneActivity : CyaneaAppCompatActivity(), ItemFilterListener<TimeZoneI
                 return true
             }
         })
+        search.queryHint = getString(R.string.time_zone_search_hint)
 
         return super.onCreateOptionsMenu(menu)
     }
@@ -85,18 +89,45 @@ class TimeZoneActivity : CyaneaAppCompatActivity(), ItemFilterListener<TimeZoneI
         timeZoneRecycler.adapter = fastItemAdapter
         fastItemAdapter.itemFilter.filterPredicate =
             { item: TimeZoneItem, constraint: CharSequence? ->
+                // Filter regions that contain query or offsets whose hour
                 val constraintLower = constraint.toString().toLowerCase()
                 val region = item.region.toLowerCase()
-                // https://stackoverflow.com/a/4030936
-                val offset = item.utcOffset.replace("\\D+", "")
-                region.contains(constraintLower) || offset.startsWith(constraintLower)
+                val offset = item.utcOffset.replaceFirst("[A-z]+".toRegex(), "")
+                region.contains(constraintLower) || matchesOffset(constraintLower, offset)
             }
+
         fastItemAdapter.itemFilter.itemFilterListener = this
 
         val items = intent.getParcelableArrayListExtra<TimeZoneItem>(
             KEY_TIME_ZONE_ITEMS
         )
         fastItemAdapter.add(items)
+    }
+
+    /**
+     * @param query Any string
+     * @param offset String in form +13:45, -13, -3, etc
+     */
+    private fun matchesOffset(query: String, offset: String) : Boolean {
+        var signedQuery = query.replace('-', minusSign)
+        if (minusSign !in signedQuery && plusSign !in signedQuery) signedQuery = "$plusSign$query"
+
+        return when {
+            // If searching by sign, match all that have that sign
+            (signedQuery == plusSign.toString() || signedQuery == minusSign.toString()) ->
+                offset.startsWith(signedQuery)
+
+            // If searching by minutes, match all that are NOT on the hour
+            // and whose minutes component starts with query
+            query.startsWith(":") ->
+                ':' in offset && offset.split(":")[1].startsWith(query.removePrefix(":"))
+
+            // If searching by hour, match hour exactly (e.g. query=1 matches +1:30, not +11:30)
+            ':' !in signedQuery -> offset.split(":")[0].endsWith(signedQuery)
+
+            // If ':' in middle of query, match lazily
+            else -> offset.startsWith(signedQuery)
+        }
     }
 
     override fun itemsFiltered(constraint: CharSequence?, results: List<TimeZoneItem>?) {
